@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,15 +53,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
+				// Ocean-specific colors
+				ocean: {
+					deep: 'hsl(var(--ocean-deep))',
+					mid: 'hsl(var(--ocean-mid))',
+					surface: 'hsl(var(--ocean-surface))',
+					foam: 'hsl(var(--ocean-foam))'
+				},
+				data: {
+					temperature: 'hsl(var(--data-temperature))',
+					salinity: 'hsl(var(--data-salinity))',
+					pressure: 'hsl(var(--data-pressure))',
+					oxygen: 'hsl(var(--data-oxygen))'
 				}
 			},
 			borderRadius: {
@@ -84,11 +88,46 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				wave: {
+					'0%, 100%': {
+						transform: 'translateX(0px) translateY(0px)'
+					},
+					'33%': {
+						transform: 'translateX(30px) translateY(-10px)'
+					},
+					'66%': {
+						transform: 'translateX(-20px) translateY(10px)'
+					}
+				},
+				float: {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg)'
+					},
+					'50%': {
+						transform: 'translateY(-20px) rotate(1deg)'
+					}
+				},
+				'gradient-shift': {
+					'0%, 100%': {
+						'background-position': '0% 50%'
+					},
+					'50%': {
+						'background-position': '100% 50%'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'wave': 'wave 3s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'gradient': 'gradient-shift 8s ease infinite'
+			},
+			backgroundImage: {
+				'ocean-gradient': 'var(--gradient-ocean)',
+				'surface-gradient': 'var(--gradient-surface)',
+				'depth-gradient': 'var(--gradient-depth)'
 			}
 		}
 	},
