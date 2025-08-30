@@ -1,7 +1,7 @@
-
 import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import AIChat from '@/components/AIChat';
+import InteractiveMap from '@/components/InteractiveMap';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -95,7 +95,7 @@ const Dashboard = () => {
                     <metric.icon className={`w-5 h-5 text-${metric.color}`} />
                     {metric.trend === 'up' && <TrendingUp className="w-4 h-4 text-green-500" />}
                     {metric.trend === 'down' && <TrendingDown className="w-4 h-4 text-red-500" />}
-                    {metric.trend === 'stable' && <Activity className="w-4 h-4 text-yellow-500" />}
+                    {metric.trend === 'stable' && <Activity className="w4 h-4 text-yellow-500" />}
                   </div>
                   <div className="text-2xl font-bold text-foreground">{metric.value}</div>
                   <div className="text-xs text-muted-foreground">{metric.label}</div>
@@ -104,7 +104,7 @@ const Dashboard = () => {
               ))}
             </div>
 
-            {/* Interactive Map Placeholder */}
+            {/* Interactive Map */}
             <Card className="data-card p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-semibold flex items-center">
@@ -113,23 +113,12 @@ const Dashboard = () => {
                 </h3>
                 <Button variant="outline" size="sm">
                   <MapPin className="w-4 h-4 mr-2" />
-                  Full Map
+                  Full Screen
                 </Button>
               </div>
               
-              <div className="aspect-video bg-depth-gradient rounded-lg flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-ocean-gradient opacity-80" />
-                <div className="relative z-10 text-center text-white">
-                  <Globe className="w-16 h-16 mx-auto mb-4 animate-float" />
-                  <h4 className="text-xl font-semibold mb-2">Interactive Ocean Map</h4>
-                  <p className="text-white/80">Real-time visualization of {floatData.length} active floats</p>
-                  
-                  {/* Simulated float positions */}
-                  <div className="absolute top-1/4 left-1/3 w-3 h-3 bg-accent rounded-full animate-pulse shadow-lg" />
-                  <div className="absolute top-1/2 right-1/4 w-3 h-3 bg-accent rounded-full animate-pulse shadow-lg" style={{ animationDelay: '0.5s' }} />
-                  <div className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-yellow-400 rounded-full animate-pulse shadow-lg" style={{ animationDelay: '1s' }} />
-                  <div className="absolute top-1/3 right-1/3 w-3 h-3 bg-accent rounded-full animate-pulse shadow-lg" style={{ animationDelay: '1.5s' }} />
-                </div>
+              <div className="h-96 rounded-lg overflow-hidden">
+                <InteractiveMap />
               </div>
             </Card>
 

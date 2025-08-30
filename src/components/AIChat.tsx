@@ -1,42 +1,59 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Mic, MicOff } from 'lucide-react';
+import { Send, Bot, User, Mic, MicOff, Sparkles, Database, BarChart3, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
 
 interface Message {
   id: string;
   content: string;
   sender: 'user' | 'ai';
   timestamp: Date;
+  type?: 'text' | 'data' | 'chart' | 'location';
+  data?: any;
 }
 
 const AIChat = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: 'Hello! I\'m your oceanographic research assistant. I can help you analyze ARGO float data, generate visualizations, and answer questions about ocean conditions. What would you like to explore today?',
+      content: 'Hello! I\'m your advanced oceanographic AI assistant. I can help you:\n\n🌊 Analyze ARGO float data in real-time\n📊 Generate interactive visualizations\n🔍 Detect anomalies and patterns\n🌍 Track global ocean conditions\n📈 Create predictive models\n\nWhat would you like to explore today?',
       sender: 'ai',
-      timestamp: new Date()
+      timestamp: new Date(),
+      type: 'text'
     }
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  const sampleQueries = [
-    "Show me temperature profiles from the Pacific Ocean",
-    "Compare salinity data between 2020 and 2023",
-    "Find anomalies in recent float data",
-    "Generate a report on North Atlantic conditions"
+  const intelligentQueries = [
+    "Show temperature anomalies in the North Atlantic",
+    "Compare salinity trends between 2020-2024",
+    "Find active floats near the Gulf Stream",
+    "Predict ocean warming patterns for next month",
+    "Analyze oxygen levels in the Pacific",
+    "Generate report on Arctic Ocean changes"
+  ];
+
+  const quickActions = [
+    { icon: Database, label: "Data Pipeline", query: "Show me the current ARGO data ingestion status" },
+    { icon: BarChart3, label: "Analytics", query: "Generate advanced analytics for recent ocean data" },
+    { icon: MapPin, label: "Global Map", query: "Display global float network with real-time positions" },
+    { icon: Sparkles, label: "AI Insights", query: "What are the most significant ocean patterns detected recently?" }
   ];
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollElement) {
+        scrollElement.scrollTop = scrollElement.scrollHeight;
+      }
     }
   }, [messages]);
 
@@ -47,40 +64,94 @@ const AIChat = () => {
       id: Date.now().toString(),
       content: content.trim(),
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      type: 'text'
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInputValue('');
     setIsLoading(true);
+    setIsTyping(true);
 
-    // Simulate AI response
+    // Simulate realistic AI processing time
+    const processingTime = 1500 + Math.random() * 3000;
+    
     setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        content: generateAIResponse(content),
-        sender: 'ai',
-        timestamp: new Date()
-      };
+      setIsTyping(false);
+      const aiResponse = generateIntelligentResponse(content);
       setMessages(prev => [...prev, aiResponse]);
       setIsLoading(false);
-    }, 1000 + Math.random() * 2000);
+    }, processingTime);
   };
 
-  const generateAIResponse = (query: string): string => {
+  const generateIntelligentResponse = (query: string): Message => {
+    const lowercaseQuery = query.toLowerCase();
+    
+    // Analyze query intent and generate contextual response
+    if (lowercaseQuery.includes('temperature') || lowercaseQuery.includes('warming')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        content: `🌡️ **Temperature Analysis Complete**\n\nI've analyzed ${Math.floor(Math.random() * 1000 + 500)} temperature profiles from the past 30 days:\n\n**Key Findings:**\n• Average SST: ${(Math.random() * 5 + 20).toFixed(1)}°C\n• Anomaly detected: +${(Math.random() * 2 + 0.5).toFixed(1)}°C above seasonal average\n• Hotspot identified at 35.2°N, 75.4°W\n• Trend: ${Math.random() > 0.5 ? 'Increasing' : 'Stabilizing'} pattern observed\n\n**Recommendations:**\n✓ Monitor Gulf Stream dynamics\n✓ Check for El Niño correlation\n✓ Validate with satellite data\n\nWould you like me to generate a detailed temperature map or trend analysis?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'data',
+        data: { type: 'temperature', floats: Math.floor(Math.random() * 1000 + 500) }
+      };
+    }
+    
+    if (lowercaseQuery.includes('salinity') || lowercaseQuery.includes('salt')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        content: `🧂 **Salinity Analysis Results**\n\nProcessed ${Math.floor(Math.random() * 800 + 300)} salinity measurements:\n\n**Ocean Basin Summary:**\n• Atlantic: ${(Math.random() * 1 + 35).toFixed(1)} PSU (±${(Math.random() * 0.5).toFixed(1)})\n• Pacific: ${(Math.random() * 1 + 34).toFixed(1)} PSU (±${(Math.random() * 0.5).toFixed(1)})\n• Indian: ${(Math.random() * 1 + 34.5).toFixed(1)} PSU (±${(Math.random() * 0.5).toFixed(1)})\n\n**Notable Patterns:**\n🔍 Freshwater intrusion detected in Arctic regions\n📊 Seasonal variation within normal range\n⚠️  Monitoring subsurface salinity gradients\n\nShall I create a comparative salinity chart or focus on a specific region?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'data'
+      };
+    }
+    
+    if (lowercaseQuery.includes('float') || lowercaseQuery.includes('argo')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        content: `🎯 **ARGO Float Network Status**\n\n**Global Fleet Overview:**\n• Active Floats: ${Math.floor(Math.random() * 500 + 3800)}\n• Daily Profiles: ${Math.floor(Math.random() * 5000 + 12000)}\n• Ocean Coverage: ${Math.floor(Math.random() * 10 + 85)}%\n• Data Quality: ${Math.floor(Math.random() * 5 + 95)}% validated\n\n**Recent Deployments:**\n🚢 15 new floats deployed in Southern Ocean\n🌊 Gulf Stream array maintenance completed\n📡 Real-time transmission: 98.7% success rate\n\n**Performance Metrics:**\n✅ ${Math.floor(Math.random() * 200 + 3600)} floats reporting normally\n⚠️  ${Math.floor(Math.random() * 50 + 150)} floats in warning status\n🔧 ${Math.floor(Math.random() * 30 + 45)} floats due for maintenance\n\nWould you like to see the interactive global map or detailed float performance metrics?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'location'
+      };
+    }
+    
+    if (lowercaseQuery.includes('predict') || lowercaseQuery.includes('forecast')) {
+      return {
+        id: (Date.now() + 1).toString(),
+        content: `🔮 **Predictive Ocean Modeling**\n\nUsing advanced ML algorithms to forecast ocean conditions:\n\n**30-Day Forecast:**\n📈 Temperature: ${Math.random() > 0.5 ? 'Warming trend' : 'Cooling trend'} expected\n🌊 Salinity: Stable with minor seasonal variations\n💨 Current strength: ${Math.floor(Math.random() * 20 + 80)}% of seasonal average\n\n**Model Performance:**\n• Accuracy: ${(Math.random() * 10 + 85).toFixed(1)}%\n• Confidence: ${(Math.random() * 15 + 80).toFixed(1)}%\n• Updated: ${Math.floor(Math.random() * 24 + 1)} hours ago\n\n**Key Predictions:**\n🌀 Potential eddy formation in Gulf of Mexico\n❄️  Arctic stratification changes expected\n🌡️  SST anomalies may persist for 2-3 weeks\n\nWant me to run a specific regional forecast or generate prediction visualizations?`,
+        sender: 'ai',
+        timestamp: new Date(),
+        type: 'chart'
+      };
+    }
+    
+    // Default intelligent response
     const responses = [
-      `Based on the latest ARGO float data, I've analyzed ${Math.floor(Math.random() * 500 + 100)} profiles. Here are the key findings:\n\n• Temperature anomaly detected at 200m depth\n• Salinity levels show seasonal variation\n• Oxygen concentrations within normal range\n\nWould you like me to generate a detailed visualization?`,
-      `I've processed your oceanographic query and found interesting patterns in the data:\n\n• ${Math.floor(Math.random() * 50 + 20)} active floats in the region\n• Temperature range: 4.2°C to 28.6°C\n• Salinity: 34.5 to 36.8 PSU\n\nShall I create a comparative analysis chart?`,
-      `Excellent question! The ARGO network has collected over ${Math.floor(Math.random() * 1000000 + 500000)} profiles globally. For your specific query:\n\n• Data quality: 98.5% validated\n• Coverage: ${Math.floor(Math.random() * 30 + 50)} ocean basins\n• Latest update: ${Math.floor(Math.random() * 24 + 1)} hours ago\n\nHow would you like to visualize this data?`
+      `🧠 **Advanced Analysis Complete**\n\nI've processed your query using our neural network models:\n\n**Data Sources Analyzed:**\n• ${Math.floor(Math.random() * 2000 + 1000)} ARGO profiles\n• ${Math.floor(Math.random() * 500 + 200)} satellite observations\n• ${Math.floor(Math.random() * 100 + 50)} coastal stations\n\n**AI Insights:**\n🔍 Pattern recognition identified ${Math.floor(Math.random() * 5 + 3)} significant features\n📊 Statistical analysis shows ${Math.random() > 0.5 ? 'positive' : 'negative'} correlation\n⚡ Anomaly detection flagged ${Math.floor(Math.random() * 10 + 2)} potential outliers\n\n**Recommended Actions:**\n✓ Cross-reference with historical data\n✓ Validate findings with domain experts\n✓ Monitor for emerging patterns\n\nHow would you like to visualize these results?`,
+      
+      `🌊 **Ocean Intelligence Report**\n\nYour query has been processed through our comprehensive analytics pipeline:\n\n**Processing Summary:**\n• Analysis Duration: ${(Math.random() * 3 + 1).toFixed(1)} seconds\n• Data Points: ${Math.floor(Math.random() * 50000 + 100000).toLocaleString()}\n• Quality Score: ${(Math.random() * 10 + 85).toFixed(1)}%\n• Confidence Level: High\n\n**Key Results:**\n📈 Trend analysis reveals significant patterns\n🎯 Target parameters within expected ranges\n🔬 Research-grade accuracy achieved\n🌍 Global context analysis included\n\n**Next Steps:**\n• Generate detailed visualization?\n• Export data for further analysis?\n• Set up monitoring alerts?\n• Create automated reports?\n\nWhat aspect would you like to explore deeper?`,
+      
+      `🚀 **Smart Ocean Analytics**\n\nLeveraging AI-powered insights from our comprehensive database:\n\n**Query Processing:**\n• Vector search through ${Math.floor(Math.random() * 10 + 50)}M data points\n• Machine learning inference completed\n• Natural language understanding: 98% accuracy\n• Context awareness: Full oceanographic domain\n\n**Intelligence Summary:**\n🎯 Identified ${Math.floor(Math.random() * 8 + 5)} relevant patterns\n📊 Statistical significance: p < 0.${Math.floor(Math.random() * 9 + 1)}\n🌊 Ocean state classification: ${['Normal', 'Anomalous', 'Transitional'][Math.floor(Math.random() * 3)]}\n⭐ Research impact potential: High\n\n**Available Outputs:**\n• Interactive visualizations\n• Downloadable datasets\n• Research-ready reports\n• API endpoints for integration\n\nWhich format would be most useful for your research?`
     ];
     
-    return responses[Math.floor(Math.random() * responses.length)];
+    return {
+      id: (Date.now() + 1).toString(),
+      content: responses[Math.floor(Math.random() * responses.length)],
+      sender: 'ai',
+      timestamp: new Date(),
+      type: 'data'
+    };
   };
 
   const toggleVoiceInput = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       setIsListening(!isListening);
       // Voice recognition implementation would go here
+      console.log('Voice recognition:', isListening ? 'stopped' : 'started');
     } else {
       console.log('Speech recognition not supported');
     }
@@ -95,33 +166,40 @@ const AIChat = () => {
 
   return (
     <Card className="h-full flex flex-col data-card">
-      {/* Header */}
+      {/* Enhanced Header */}
       <div className="p-4 border-b border-border/20 bg-surface-gradient">
-        <div className="flex items-center space-x-3">
-          <div className="relative">
-            <Bot className="w-6 h-6 text-primary animate-float" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <Bot className="w-6 h-6 text-primary animate-float" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">Ocean AI Assistant</h3>
+              <p className="text-xs text-muted-foreground">Advanced marine analytics • Real-time processing</p>
+            </div>
           </div>
-          <div>
-            <h3 className="font-semibold text-foreground">Ocean AI Assistant</h3>
-            <p className="text-xs text-muted-foreground">Powered by advanced marine analytics</p>
-          </div>
+          <Badge variant="outline" className="text-xs bg-accent/10 text-accent border-accent/30">
+            <Sparkles className="w-3 h-3 mr-1" />
+            AI Powered
+          </Badge>
         </div>
       </div>
 
-      {/* Sample Queries */}
+      {/* Quick Actions */}
       <div className="p-4 border-b border-border/20">
-        <p className="text-sm text-muted-foreground mb-2">Try asking:</p>
-        <div className="flex flex-wrap gap-2">
-          {sampleQueries.map((query, index) => (
+        <p className="text-sm text-muted-foreground mb-3">Quick actions:</p>
+        <div className="grid grid-cols-2 gap-2">
+          {quickActions.map((action, index) => (
             <Button
               key={index}
               variant="outline"
               size="sm"
-              className="text-xs hover:bg-accent/20 border-accent/30"
-              onClick={() => handleSendMessage(query)}
+              className="text-xs hover:bg-accent/20 border-accent/30 justify-start"
+              onClick={() => handleSendMessage(action.query)}
             >
-              {query}
+              <action.icon className="w-3 h-3 mr-2" />
+              {action.label}
             </Button>
           ))}
         </div>
@@ -157,6 +235,16 @@ const AIChat = () => {
                     : 'bg-muted text-muted-foreground border border-border/30'
                 }`}>
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  {message.type !== 'text' && (
+                    <div className="mt-2 pt-2 border-t border-border/20">
+                      <Badge variant="secondary" className="text-xs">
+                        {message.type === 'data' && <Database className="w-3 h-3 mr-1" />}
+                        {message.type === 'chart' && <BarChart3 className="w-3 h-3 mr-1" />}
+                        {message.type === 'location' && <MapPin className="w-3 h-3 mr-1" />}
+                        {message.type?.toUpperCase()} ANALYSIS
+                      </Badge>
+                    </div>
+                  )}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -170,18 +258,43 @@ const AIChat = () => {
                 <Bot className="w-4 h-4 animate-pulse" />
               </div>
               <div className="bg-muted p-3 rounded-lg border border-border/30">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-accent rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                  <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                </div>
+                {isTyping ? (
+                  <div className="flex items-center space-x-2">
+                    <Sparkles className="w-4 h-4 text-accent animate-spin" />
+                    <span className="text-sm text-muted-foreground">AI is analyzing ocean data...</span>
+                  </div>
+                ) : (
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                    <div className="w-2 h-2 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
       </ScrollArea>
 
-      {/* Input */}
+      {/* Sample Queries */}
+      <div className="p-3 border-t border-border/20 bg-muted/30">
+        <p className="text-xs text-muted-foreground mb-2">Try asking:</p>
+        <div className="flex flex-wrap gap-1">
+          {intelligentQueries.slice(0, 3).map((query, index) => (
+            <Button
+              key={index}
+              variant="ghost"
+              size="sm"
+              className="text-xs h-6 px-2 hover:bg-accent/20 text-muted-foreground hover:text-foreground"
+              onClick={() => handleSendMessage(query)}
+            >
+              "{query}"
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Enhanced Input */}
       <div className="p-4 border-t border-border/20 bg-background/50">
         <div className="flex space-x-2">
           <div className="flex-1 relative">
@@ -189,19 +302,21 @@ const AIChat = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about ocean data, request analysis, or generate visualizations..."
+              placeholder="Ask about ocean data, request analysis, or generate insights..."
               className="pr-12 border-accent/30 focus:border-accent"
             />
             <Button
               variant="ghost"
               size="sm"
-              className="absolute right-2 top-1/2 -translate-y-1/2 hover:bg-accent/20"
+              className={`absolute right-2 top-1/2 -translate-y-1/2 hover:bg-accent/20 ${
+                isListening ? 'text-destructive' : 'text-muted-foreground'
+              }`}
               onClick={toggleVoiceInput}
             >
               {isListening ? (
-                <MicOff className="w-4 h-4 text-destructive" />
+                <MicOff className="w-4 h-4" />
               ) : (
-                <Mic className="w-4 h-4 text-muted-foreground" />
+                <Mic className="w-4 h-4" />
               )}
             </Button>
           </div>
