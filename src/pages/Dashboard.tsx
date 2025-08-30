@@ -18,7 +18,8 @@ import {
   AlertTriangle,
   CheckCircle,
   Waves,
-  Globe
+  Globe,
+  BarChart3
 } from 'lucide-react';
 
 const Dashboard = () => {
