@@ -76,15 +76,15 @@ const Index = () => {
         <div className="absolute inset-0 ocean-gradient opacity-90" />
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-64 h-64 bg-accent/20 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-wave" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
         </div>
         
         <div className="relative container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 text-white">
-                <Waves className="w-4 h-4 animate-wave" />
-                <span className="text-sm font-medium">SIH 2024 Hackathon Project</span>
+                <Waves className="w-4 h-4" />
+                {/* <span className="text-sm font-medium">SIH 2024 Hackathon Project</span> */}
               </div>
               
               <h1 className="text-white mb-6">
@@ -166,7 +166,7 @@ const Index = () => {
         <div className="absolute inset-0 surface-gradient opacity-90" />
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-wave" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
         </div>
         
         <div className="relative container mx-auto px-4 text-center">
@@ -199,7 +199,7 @@ const Index = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Waves className="w-6 h-6 text-accent animate-wave" />
+                <Waves className="w-6 h-6 text-accent" />
                 <span className="text-xl font-bold text-white">ArgoAI</span>
               </div>
               <p className="text-sm">

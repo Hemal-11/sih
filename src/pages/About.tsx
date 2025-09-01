@@ -36,7 +36,7 @@ const About = () => {
   ];
 
   const achievements = [
-    'SIH 2024 Hackathon Project',
+  // 'SIH 2024 Hackathon Project',
     '4,000+ ARGO Floats Monitored',
     '99.9% System Uptime',
     'Real-time Global Coverage',
@@ -52,7 +52,7 @@ const About = () => {
         {/* Hero Section */}
         <section className="text-center mb-16">
           <div className="inline-flex items-center space-x-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
-            <Waves className="w-4 h-4 text-primary animate-wave" />
+            <Waves className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">About ArgoAI Platform</span>
           </div>
           

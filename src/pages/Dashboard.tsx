@@ -93,7 +93,7 @@ const Dashboard = () => {
                 <Card key={index} className="data-card p-4">
                   <div className="flex items-center justify-between mb-2">
                     <metric.icon className={`w-5 h-5 text-${metric.color}`} />
-                    {metric.trend === 'up' && <TrendingUp className="w-4 h-4 text-green-500" />}
+                    {metric.trend === 'up' && <TrendingUp className="w-4 h-100 text-green-500" />}
                     {metric.trend === 'down' && <TrendingDown className="w-4 h-4 text-red-500" />}
                     {metric.trend === 'stable' && <Activity className="w4 h-4 text-yellow-500" />}
                   </div>

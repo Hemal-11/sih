@@ -35,7 +35,7 @@ const Navigation = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <Waves className="w-8 h-8 text-primary animate-wave group-hover:animate-bounce" />
+            <Waves className="w-8 h-8 text-primary" />
             <span className="text-xl font-bold text-foreground">ArgoAI</span>
             <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded-full">SIH 2024</span>
           </Link>
